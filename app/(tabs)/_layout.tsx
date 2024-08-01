@@ -4,20 +4,31 @@ import React from 'react';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
+import { View } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
 
 export default function TabLayout() {
+  NavigationBar.setBackgroundColorAsync("#111111");
 
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[useColorScheme() ?? 'light'].tint,
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: '#A0A0A0',
+        tabBarStyle: {
+          backgroundColor: '#111111',
+          height: 60,
+          paddingTop: 10,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        },
         headerShown: false,
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'IMT',
+          tabBarLabel: '',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'scale' : 'scale-outline'} size={24} color={color} />
           ),
@@ -26,7 +37,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'SLEEP',
+          tabBarLabel: '',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'moon' : 'moon-outline'} size={24} color={color} />
           ),
@@ -35,7 +46,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="diagnosis"
         options={{
-          title: 'DIAGNOSIS',
+          tabBarLabel: '',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'analytics' : 'analytics-outline'} size={24} color={color} />
           ),
@@ -44,7 +55,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="faq"
         options={{
-          title: 'FAQ',
+          tabBarLabel: '',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'help-circle' : 'help-circle-outline'} size={24} color={color} />
           ),

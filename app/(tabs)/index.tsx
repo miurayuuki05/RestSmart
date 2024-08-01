@@ -1,18 +1,20 @@
-import { Image, StyleSheet, Platform, Button, Pressable } from 'react-native';
+import { Image, StyleSheet, Platform, Button, Pressable, TouchableHighlight } from 'react-native';
 
 import React from 'react';
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import { useState, useMemo } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { RadioGroup } from 'react-native-radio-buttons-group';
 import { Appearance } from 'react-native';
 import boybmi from '../../databmi/boybmi.json';
 import girlbmi from '../../databmi/girlbmi.json';
-import Svg, {Path, Circle} from "react-native-svg";
+import GaugeChart from '@/components/Gauge';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+
+SplashScreen.preventAutoHideAsync()
+
 
 const data = [
   { label: '2 Tahun', value: '2' },
@@ -55,7 +57,8 @@ if (colorScheme === 'dark') {
       fontSize: 20,
       fontWeight: 'bold',
       textAlign: 'center',
-      marginBottom: 50,
+      marginBottom: 30,
+      fontFamily: 'NunitoSans',
     },
     textColor: {
       color: 'white',
@@ -123,11 +126,18 @@ if (colorScheme === 'dark') {
     },
     formSub : {
       width : '30%',
+    },
+    chartStyle : {
+      display : 'flex',
+      alignItems : 'center',
+      justifyContent : 'center',
+      marginTop : 20,
+      marginBottom : 20,
     }
   });
   
 }else{
-  styles = StyleSheet.create({
+  styles = StyleSheet.create({  
     containerMain: {
       paddingTop: 70,
       paddingHorizontal: 30,
@@ -137,7 +147,8 @@ if (colorScheme === 'dark') {
       fontSize: 20,
       fontWeight: 'bold',
       textAlign: 'center',
-      marginBottom: 50,
+      marginBottom: 30,
+      fontFamily : 'NunitoSans',
     },
     textColor: {
       color: 'black',
@@ -218,11 +229,22 @@ if (colorScheme === 'dark') {
     },
     formSub : {
       width : '30%',
-    }
+    },
+    chartStyle : {
+      display : 'flex',
+      alignItems : 'center',
+      justifyContent : 'center',
+      marginTop : 20,
+      marginBottom : 20,
+    }, 
   });
 }
 
 export default function HomeScreen() {
+  const [loaded, error] = useFonts({
+    'NunitoSans': require('../../assets/fonts/NunitoSans.ttf'),
+  });
+
 
   const radioButton = useMemo(() => ([
     {
@@ -274,7 +296,7 @@ export default function HomeScreen() {
     }
     
     if(gender === 'M'){
-      boybmi.forEach((item) => {
+      boybmi.forEach((item :  any) => {
         if(item.age === numberAge * 12){
           if(imt < item.rd5){
             setStatus('Underweight');
@@ -290,7 +312,7 @@ export default function HomeScreen() {
       }
       )
     }else{
-      girlbmi.forEach((item) => {
+      girlbmi.forEach((item : any) => {
         if(item.age === numberAge * 12){
           if(imt < item.rd5){
             setStatus('Underweight');
@@ -309,21 +331,42 @@ export default function HomeScreen() {
     return imt;
   }
 
+  const resetInput = () => {
+    setName('');
+    setWeight('');
+    setHeight('');
+    setAge('');
+    setImt(0);
+    setStatus('');
+    setGender('');
+  }
+
   const renderHasil = () => {
     if (imt > 0 && status !== '') {
       return (
         <View>
           <Text style={styles.textColor}>IMT</Text>
-          <Text style={styles.textColor}>{imt}</Text>
-          <Text style={styles.textColor}>Status</Text>
           <Text style={styles.textColor}>{status}</Text>
+          <GaugeChart value={imt} max={40} />
         </View>
       );
     } else {
-      return <Text style={styles.textColor}>Input Data Secara Lengkap</Text>;
+      return <Text style={styles.textColor}>Input data secara lengkap</Text>;
     }
   }
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
+  
   return (
+    <ScrollView>
     <View style={styles.containerMain}>
       <Text style={styles.headerText}>Perhitungan IMT</Text>
       <Text style={styles.textColor}>Nama</Text>
@@ -361,15 +404,18 @@ export default function HomeScreen() {
       <Text style={styles.textColor}>Jenis Kelamin</Text>
       <RadioGroup layout='row' labelStyle={styles.radioStyle} radioButtons={radioButton} onPress={setGender} selectedId={gender} />
       <View style={styles.flex}>
-      <Pressable style={styles.buttonReset} onPress={() => calculateIMT()}>
+      <TouchableHighlight underlayColor="#e0e0e0" style={styles.buttonReset} onPress={() => resetInput()}>
         <Text style={[styles.textColor, styles.centerText]}>Reset</Text>
-      </Pressable>
-      <Pressable style={styles.buttonImt} onPress={() => calculateIMT()}>
+      </TouchableHighlight>
+      <TouchableHighlight underlayColor="#e0e0e0" style={styles.buttonImt} onPress={() => calculateIMT()}>
         <Text style={[styles.textColor, styles.centerText]}>Hitung</Text>
-      </Pressable>
+      </TouchableHighlight>
       </View>
+      <View style={styles.chartStyle}>
       {renderHasil()}
+      </View>
     </View>
+    </ScrollView>
   );
 }
 
