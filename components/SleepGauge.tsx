@@ -3,47 +3,39 @@ import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path, Defs, LinearGradient, Stop } from 'react-native-svg';
 
-interface GaugeChartProps {
+interface SleepGaugeChartProps {
   value: number;
   max: number;
   radius?: number;
 }
 
-const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, radius = 100 }) => {
+const SleepGaugeChart: React.FC<SleepGaugeChartProps> = ({ value, max, radius = 100 }) => {
   const percentage = Math.min(value / max, 1); // Ensure percentage doesn't exceed 100%
   const circumference = Math.PI * radius;
   const strokeDasharray = circumference * percentage;
   const strokeWidth = 35;
   const center = radius + strokeWidth / 2;
   const diameter = radius * 2 + strokeWidth;
-  let level = '';
+  let klasifikasi = '';
 
   // Determine the color based on the value
   let gradientId = 'default';
   let gradientColors = ['#4caf50', '#4caf50']; // Default to green
   
-  if (value < 18.5) {
-    gradientId = 'underweight';
+  if(value < 3){
+    gradientId = 'Kualitas Tidur Buruk';
     gradientColors = ['#ffeb3b', '#ffeb3b']; // Yellow
-    level = 'Underweight';
-  } else if (value >= 18.5 && value <= 24.9) {
-    gradientId = 'healthy';
+    klasifikasi = 'Buruk';
+  }else{
+    gradientId = 'Kualitas Tidur Baik';
     gradientColors = ['#4caf50', '#4caf50']; // Green
-    level = 'Healthy';
-  } else if (value >= 25 && value <= 30) {
-    gradientId = 'overweight';
-    gradientColors = ['#ffeb3b', '#ffeb3b']; // Yellow
-    level = 'Overweight';
-  } else {
-    gradientId = 'obese';
-    gradientColors = ['#f44336', '#f44336']; // Red
-    level = 'Obese'; 
+    klasifikasi = 'Baik';
   }
 
   return (
     <SafeAreaView>
     <View style={styles.container}>
-      <Text style={styles.title}>Hasil IMT</Text>
+      <Text style={styles.title}>Hasil Kuesioner</Text>
       <View style={{height : diameter / 2.4, width : diameter, overflow : 'hidden'}}>
       <Svg
         width={diameter}
@@ -51,22 +43,14 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, radius = 100 }) => 
         viewBox={`0 0 ${diameter} ${diameter}`}
       >
         <Defs>
-          <LinearGradient id="underweight" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#ffeb3b" />
-            <Stop offset="100%" stopColor="#ffeb3b" />
-          </LinearGradient>
-          <LinearGradient id="healthy" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#4caf50" />
-            <Stop offset="100%" stopColor="#4caf50" />
-          </LinearGradient>
-          <LinearGradient id="overweight" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#ffeb3b" />
-            <Stop offset="100%" stopColor="#ffeb3b" />
-          </LinearGradient>
-          <LinearGradient id="obese" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#f44336" />
-            <Stop offset="100%" stopColor="#f44336" />
-          </LinearGradient>
+            <LinearGradient id="Kualitas Tidur Buruk" x1="0%" y1="0%" x2="100%" y2="100%">
+                <Stop offset="0%" stopColor="#ffeb3b" />
+                <Stop offset="100%" stopColor="#ffeb3b" />
+            </LinearGradient>
+            <LinearGradient id="Kualitas Tidur Baik" x1="0%" y1="0%" x2="100%" y2="100%">
+                <Stop offset="0%" stopColor="#4caf50" />
+                <Stop offset="100%" stopColor="#4caf50" />
+            </LinearGradient>
         </Defs>
         {/* Background circle */}
         <Circle
@@ -101,18 +85,21 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, radius = 100 }) => 
         Klasifikasi
       </Text>
       <Text style={styles.textlevel}>
-        {level}
-      </Text>
-      <View style={styles.tipscontainer}>
-        <Text style={styles.tipstitles}>
-          Tips : 
-        </Text>
-        <Text style={styles.tipsdesc}>
-          Konsumsi makanan yang kaya akan protein
-        </Text>
-        <Text style={styles.tipsdesc}>
-          Pelajari lebih lanjut
-        </Text>
+        {klasifikasi}
+      </Text>      
+      <View>
+        {value < 3 ?(
+            <Text>
+                Kualitas Tidur Anda Buruk, Berikut Tips Untuk Meningkatkan Kualitas Tidur Anda :
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in nisi nec libero
+            </Text>
+        ) : 
+        (
+            <Text>
+                Kualitas Tidur Anda Baik, Pertahankan Kualitas Tidur Anda Dengan Cara Berikut :
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in nisi nec libero
+            </Text>
+        )}
       </View>
     </View>
     </SafeAreaView>
@@ -165,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GaugeChart;
+export default SleepGaugeChart;

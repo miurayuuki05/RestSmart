@@ -51,10 +51,11 @@ if (colorScheme === 'dark') {
     containerMain: {
       paddingTop: 70,
       paddingHorizontal: 30,
+      marginBottom : 50,
     },
     headerText: {
       color: 'white',
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: 30,
@@ -141,10 +142,11 @@ if (colorScheme === 'dark') {
     containerMain: {
       paddingTop: 70,
       paddingHorizontal: 30,
+      marginBottom : 50,
     },
     headerText: {
       color: 'black',
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: 30,
@@ -344,9 +346,7 @@ export default function HomeScreen() {
   const renderHasil = () => {
     if (imt > 0 && status !== '') {
       return (
-        <View>
-          <Text style={styles.textColor}>IMT</Text>
-          <Text style={styles.textColor}>{status}</Text>
+        <View> 
           <GaugeChart value={imt} max={40} />
         </View>
       );
