@@ -89,13 +89,12 @@ const SleepGaugeChart: React.FC<SleepGaugeChartProps> = ({ value, max, radius = 
       </Text>      
       <View>
         {value < 3 ?(
-            <Text>
-                Kualitas Tidur Anda Buruk, Berikut Tips Untuk Meningkatkan Kualitas Tidur Anda :
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in nisi nec libero
+            <Text style={{textAlign : 'center'}}>
+                Kamu memiliki [klasifikasi], kualitas tidur yang buruk dapat mempengaruhi kesehatan tubuh loh, yuk perbaiki kualitas tidurmu.
             </Text>
         ) : 
         (
-            <Text>
+            <Text style={{textAlign : 'center'}}>
                 Kualitas Tidur Anda Baik, Pertahankan Kualitas Tidur Anda Dengan Cara Berikut :
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in nisi nec libero
             </Text>
@@ -133,6 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 10,
   },
   tipscontainer: {
     marginTop: 20,

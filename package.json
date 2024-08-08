@@ -18,11 +18,14 @@
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/nunito-sans": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^6.0.2",
+    "@reduxjs/toolkit": "^2.2.7",
     "expo": "~51.0.20",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.9",
     "expo-linking": "~6.3.1",
+    "expo-navigation-bar": "~3.0.7",
     "expo-router": "~3.5.18",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
@@ -44,7 +47,7 @@
     "react-native-svg": "15.2.0",
     "react-native-svg-transformer": "^0.10.0",
     "react-native-web": "^0.19.12",
-    "expo-navigation-bar": "~3.0.7"
+    "react-redux": "^9.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

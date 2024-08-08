@@ -12,6 +12,8 @@ import GaugeChart from '@/components/Gauge';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 SplashScreen.preventAutoHideAsync()
 
@@ -40,6 +42,7 @@ const data = [
 ];
 
 const colorScheme = Appearance.getColorScheme();
+const mainColor = '#e96f0a';
 
 let styles : any;
 
@@ -112,10 +115,11 @@ if (colorScheme === 'dark') {
       shadowOpacity: 1,
       shadowRadius: 10,
       width : '45%',
-      padding : 5
+      padding : 5,
+      borderRadius : 15,
     },
     buttonImt : {
-      backgroundColor : '#575956',
+      backgroundColor : mainColor,
       color : 'white',
       marginTop : 10,
       shadowColor: 'white',
@@ -123,7 +127,8 @@ if (colorScheme === 'dark') {
       shadowOpacity: 1,
       shadowRadius: 10,
       width : '45%',
-      padding : 5
+      padding : 5,
+      borderRadius : 15,
     },
     formSub : {
       width : '30%',
@@ -156,6 +161,10 @@ if (colorScheme === 'dark') {
       color: 'black',
       marginBottom: 5,
     },
+    textColorWhite: {
+      color: 'white',
+      marginBottom: 5,
+    },
     dropdown: {
       height: 50,
       borderBottomWidth: 1,
@@ -185,9 +194,9 @@ if (colorScheme === 'dark') {
       borderColor: 'gray', 
       borderWidth: 1, 
       color:'black',
-      paddingLeft : 5,
+      paddingLeft : 10,
       marginBottom : 30,
-      borderRadius : 5,
+      borderRadius : 15,
     },
     flex : {
       display : 'flex',
@@ -198,7 +207,7 @@ if (colorScheme === 'dark') {
       backgroundColor : '#fff',
       color : 'black',
       marginTop : 10,
-      borderRadius : 5,      
+      borderRadius : 15,      
       width : '45%',
       padding : 5,
       shadowColor: "#000",
@@ -211,7 +220,7 @@ if (colorScheme === 'dark') {
       elevation: 9,
     },
     buttonImt : {
-      backgroundColor : '#a0a0ff',
+      backgroundColor : mainColor,
       color : 'white',
       marginTop : 10,
       shadowColor: "#000",
@@ -224,7 +233,7 @@ if (colorScheme === 'dark') {
       elevation: 9,
       width : '45%',
       padding : 5,
-      borderRadius : 5,
+      borderRadius : 15,
     },
     centerText : {
       textAlign : 'center'
@@ -242,7 +251,7 @@ if (colorScheme === 'dark') {
   });
 }
 
-export default function HomeScreen() {
+export default function HomeScreen() {  
   const [loaded, error] = useFonts({
     'NunitoSans': require('../../assets/fonts/NunitoSans.ttf'),
   });
@@ -269,7 +278,7 @@ export default function HomeScreen() {
   const [status, setStatus] = useState('');
   const [gender, setGender] = useState('');
 
-  const calculateIMT = () => {
+  const calculateIMT = async () => {
     const numberWeight = Number(weight);
     const numberHeight = Number(height);
     const numberAge = Number(age);
@@ -281,6 +290,14 @@ export default function HomeScreen() {
 
     imt = numberWeight / ((numberHeight / 100) * (numberHeight / 100));
     setImt(imt);
+
+    await AsyncStorage.setItem('imt', imt.toString());
+    await AsyncStorage.setItem('status', status);
+    await AsyncStorage.setItem('name', name);
+    await AsyncStorage.setItem('weight', weight);
+    await AsyncStorage.setItem('height', height);
+    await AsyncStorage.setItem('age', age);
+    await AsyncStorage.setItem('gender', gender);
     
     if(numberAge > 20){    
       if (imt < 17) {
@@ -368,6 +385,16 @@ export default function HomeScreen() {
   return (
     <ScrollView>
     <View style={styles.containerMain}>
+      <View style={{display : 'flex', alignItems : 'center', flexDirection : 'row', margin : 'auto'}}>
+        <Image source={require('../../assets/images/logo/kemendikbud.png')} style={{width : 40, height : 40, marginRight : 10}} />
+        <Image source={require('../../assets/images/logo/upn.png')} style={{width : 42, height : 42, marginRight: 10}} />
+        <Image source={require('../../assets/images/logo/blu.png')} style={{width : 56, height : 40, marginRight: 10}} />
+        <Image source={require('../../assets/images/logo/kampusmerdeka.png')} style={{width : 63 , height : 32, marginRight : 10}} />
+      </View>
+      <View>
+        <Text style={{textAlign:'center', marginBottom : 10, marginTop : 20, fontWeight : 'bold'}}>Penelitian RISCOP : Pengembangan sistem intervensi dan pemantauan digital kualitas tidur untuk mencegah obesitas pada remaja</Text>
+        <Text style={{textAlign:'center', marginBottom : 30, marginTop : 10, fontWeight : 'bold'}}>Ns. Nourmayansa Vidya A, M. Kep., Sp. Kep. Kom. NIDN : 0307028803</Text>
+      </View>
       <Text style={styles.headerText}>Perhitungan IMT</Text>
       <Text style={styles.textColor}>Nama</Text>
       <TextInput placeholder='Masukan Nama' style={styles.formStyle} onChangeText={newText => setName(newText)} defaultValue={name} />
@@ -408,7 +435,7 @@ export default function HomeScreen() {
         <Text style={[styles.textColor, styles.centerText]}>Reset</Text>
       </TouchableHighlight>
       <TouchableHighlight underlayColor="#e0e0e0" style={styles.buttonImt} onPress={() => calculateIMT()}>
-        <Text style={[styles.textColor, styles.centerText]}>Hitung</Text>
+        <Text style={[styles.textColorWhite, styles.centerText]}>Hitung</Text>
       </TouchableHighlight>
       </View>
       <View style={styles.chartStyle}>

@@ -3,7 +3,9 @@ import { View, Text, TextInput, ScrollView, TouchableHighlight} from 'react-nati
 import React, { useMemo, useReducer } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import SleepGaugeChart from '@/components/SleepGauge';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const mainColor = '#e96f0a';
 
 const styles = StyleSheet.create({
   containerMain: {
@@ -31,14 +33,15 @@ const styles = StyleSheet.create({
   },
   progressFill : {
     height: 6,
-    backgroundColor: '#FF8A00',
+    backgroundColor: mainColor,
     borderRadius: 10,
   },
   textdesc: {
     fontSize: 20,
+    textAlign: 'justify',
   },
   btnsleep : {
-    backgroundColor: 'black',
+    backgroundColor: mainColor,
     padding: 10,
     borderRadius: 10,
     marginTop: 20,
@@ -76,11 +79,11 @@ const styles = StyleSheet.create({
 export default function TabTwoScreen() {
   const [quiz, setQuiz] = React.useState(false);
   const [questionNumber, setQuestionNumber] = React.useState(1);
-  let finalquestion = 5;
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  let finalquestion = 5;  
   const [scoreArray, setScoreArray] = React.useState([0,0,0,0,0]);
   const [sleepQuality, setSleepQuality] = React.useState('');
   const [totalScore, setTotalScore] = React.useState(0);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const questions = useMemo(() => [
     {
@@ -130,12 +133,15 @@ export default function TabTwoScreen() {
     setSleepQuality('');
     setQuiz(!quiz);
   }
+
   const nextQuestion = () => {
     setQuestionNumber(questionNumber + 1);
   }
+
   const prevQuestion = () => {
     setQuestionNumber(questionNumber - 1);
   }
+
   const handleScore = (value : number) => {
     let tempArray = scoreArray;
     tempArray[questionNumber - 1] = value;
@@ -151,7 +157,9 @@ export default function TabTwoScreen() {
     });
     forceUpdate();
   }
-  const handleResult = () => {
+
+  const handleResult = async () => {
+    
     let score = 0;
     scoreArray.map((value) => {
       score += value;
@@ -162,8 +170,13 @@ export default function TabTwoScreen() {
     }else{
       setSleepQuality('Tidur Anda berkualitas');
     }
+
+    await AsyncStorage.setItem('sleepQuality', sleepQuality);
+    await AsyncStorage.setItem('sleepScore', score.toString());
+    forceUpdate();
     setQuiz(!quiz);
   }
+
   const renderHasil = () => {
     if(sleepQuality !== ''){
       return (
@@ -175,6 +188,7 @@ export default function TabTwoScreen() {
       return null;
     }
   }
+
   if(quiz) {
     return (
       <ScrollView>
@@ -241,6 +255,18 @@ export default function TabTwoScreen() {
             Mulai
           </Text>
         </TouchableHighlight>
+        {sleepQuality === '' ? (
+        <View style={{marginTop: 20}}>
+          <Text>
+            Jumlah soal : {finalquestion}
+          </Text>
+        </View>
+        ) : null}
+        {sleepQuality === '' ? (
+          <View style={{marginTop: 20}}>
+            <Image source={require('../../assets/images/sleepimg.png')} style={{width: '100%', height: 280, marginTop: 20}} />
+          </View>
+        ) : null}
         <View>
           {renderHasil()}
         </View>

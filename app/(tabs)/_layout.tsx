@@ -8,16 +8,16 @@ import { View } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 
 export default function TabLayout() {
-  NavigationBar.setBackgroundColorAsync("#111111");
-
+  const mainColor = '#e96f0a';
+  NavigationBar.setBackgroundColorAsync(mainColor);
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#fff',
-        tabBarInactiveTintColor: '#A0A0A0',
+        tabBarInactiveTintColor: '#000',
         tabBarStyle: {
-          backgroundColor: '#111111',
+          backgroundColor: mainColor,
           height: 60,
           paddingTop: 10,
           borderTopLeftRadius: 20,

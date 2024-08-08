@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path, Defs, LinearGradient, Stop } from 'react-native-svg';
+import { Linking } from 'react-native';
 
 interface GaugeChartProps {
   value: number;
@@ -107,10 +108,10 @@ const GaugeChart: React.FC<GaugeChartProps> = ({ value, max, radius = 100 }) => 
         <Text style={styles.tipstitles}>
           Tips : 
         </Text>
-        <Text style={styles.tipsdesc}>
+        <Text style={[styles.whitetext]}>
           Konsumsi makanan yang kaya akan protein
         </Text>
-        <Text style={styles.tipsdesc}>
+        <Text style={{color: 'blue', textDecorationLine : 'underline', fontSize : 12, textAlign: 'center'}} onPress={() => Linking.openURL('https://www.alodokter.com/cermat-memilih-makanan-yang-mengandung-protein')}>
           Pelajari lebih lanjut
         </Text>
       </View>
@@ -157,11 +158,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: 'white',
   },
   tipsdesc: {
     fontSize: 12,
     textAlign: 'center',
     marginBottom: 10,
+    color: 'white',
+  },
+  whitetext: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 10,
+    color: 'white',
   },
 });
 
