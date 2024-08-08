@@ -96,7 +96,7 @@ export default function TabTwoScreen() {
       </Text>
       <View style={styles.gaugeContainer}>
         <GaugeChart value={imt} max={40} />
-        <View style={{marginTop: 100, marginBottom : 80, width: '80%', height: 200}}>
+        <View style={{marginTop: 100, marginBottom : 50, width: '80%', height: 200}}>
           <Image source={require('../../assets/images/bmichart.png')} style={{width: '100%', height: '100%'}} />
         </View>
         <SleepGaugeChart value={sleepScore} max={8}/>

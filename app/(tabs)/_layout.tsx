@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
 
+
 export default function TabLayout() {
   const mainColor = '#e96f0a';
   NavigationBar.setBackgroundColorAsync(mainColor);
