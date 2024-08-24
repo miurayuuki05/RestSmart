@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "white",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.miurayuuki.RestSmart"
     },
     "web": {
       "bundler": "metro",
@@ -31,7 +32,9 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/NunitoSans.ttf"]
+          "fonts": [
+            "./assets/fonts/NunitoSans.ttf"
+          ]
         }
       ]
     ],
@@ -47,6 +50,14 @@
         "tsx"
       ],
       "transformer": "node_modules/react-native-svg-transformer/index.js"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "208ea899-efea-4f9c-b626-e1032b333ee7"
+      }
     }
   }
 }

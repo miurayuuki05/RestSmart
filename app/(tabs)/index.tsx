@@ -46,103 +46,7 @@ const mainColor = '#e96f0a';
 
 let styles : any;
 
-if (colorScheme === 'dark') {
-  styles = StyleSheet.create({
-    centerText : {
-      textAlign : 'center'
-    },
-    containerMain: {
-      paddingTop: 70,
-      paddingHorizontal: 30,
-      marginBottom : 50,
-    },
-    headerText: {
-      color: 'white',
-      fontSize: 24,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: 30,
-      fontFamily: 'NunitoSans',
-    },
-    textColor: {
-      color: 'white',
-      marginBottom: 5,
-    },
-    dropdown: {
-      height: 50,
-      borderBottomWidth: 1,
-    },
-    icon: {
-      marginRight: 5,
-    },
-    placeholderStyle: {
-      color: 'white',
-    },
-    selectedTextStyle: {
-      color: 'white',
-    },
-    inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-    },
-    iconStyle: {
-      color: 'white',
-    },
-    radioStyle: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      color: 'white'
-    },
-    formStyle : {
-      height: 40, 
-      borderColor: 'gray', 
-      borderWidth: 1, 
-      color:'white',
-      borderRadius : 5,
-      marginBottom : 30,
-    },
-    flex : {
-      display : 'flex',
-      flexDirection : 'row',
-      justifyContent : 'space-between'
-    },
-    buttonReset : {
-      backgroundColor : '#575956',
-      color : 'white',
-      marginTop : 10,
-      shadowColor: 'white',
-      shadowOffset: { width: 5, height: 10 },
-      shadowOpacity: 1,
-      shadowRadius: 10,
-      width : '45%',
-      padding : 5,
-      borderRadius : 15,
-    },
-    buttonImt : {
-      backgroundColor : mainColor,
-      color : 'white',
-      marginTop : 10,
-      shadowColor: 'white',
-      shadowOffset: { width: 5, height: 10 },
-      shadowOpacity: 1,
-      shadowRadius: 10,
-      width : '45%',
-      padding : 5,
-      borderRadius : 15,
-    },
-    formSub : {
-      width : '30%',
-    },
-    chartStyle : {
-      display : 'flex',
-      alignItems : 'center',
-      justifyContent : 'center',
-      marginTop : 20,
-      marginBottom : 20,
-    }
-  });
-  
-}else{
+
   styles = StyleSheet.create({  
     containerMain: {
       paddingTop: 70,
@@ -249,7 +153,6 @@ if (colorScheme === 'dark') {
       marginBottom : 20,
     }, 
   });
-}
 
 export default function HomeScreen() {  
   const [loaded, error] = useFonts({

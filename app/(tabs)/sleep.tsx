@@ -73,63 +73,236 @@ const styles = StyleSheet.create({
   },
   radioText : {
     color: 'black',
-  }
+  },
+  textInputContainer : {
+    backgroundColor : '#fff',
+    marginTop : 10,
+    borderRadius : 10,      
+    width : '100%',
+    padding : 10,
+    shadowColor: "#000",
+    shadowOffset: {
+    width: 0,
+    height: 4,
+    } ,
+    shadowOpacity: 0.32,
+    shadowRadius: 5.46,
+    elevation: 9,
+  },
+  textInput : {
+    color: 'black',
+  },
 });
 
 export default function TabTwoScreen() {
   const [quiz, setQuiz] = React.useState(false);
   const [questionNumber, setQuestionNumber] = React.useState(1);
-  let finalquestion = 5;  
+  let finalquestion = 18;  
   const [scoreArray, setScoreArray] = React.useState([0,0,0,0,0]);
   const [sleepQuality, setSleepQuality] = React.useState('');
   const [totalScore, setTotalScore] = React.useState(0);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);  
+  const [initQuest, setInitQuest] = React.useState(0);
+  const [textInputValue, setTextInputValue] = React.useState('');
+  const [quest1 , setQuest1] = React.useState('');
+  const [quest2 , setQuest2] = React.useState('');
+
+  const handleTextInputChange = (text : string) => {
+    setTextInputValue(text);
+  }
+
+  const submitHour = (text : string, questionNumber : number) => {
+    if(questionNumber === 1){
+      setQuest1(text);
+    }else{
+      setQuest2(text);
+    }
+    setTextInputValue('');
+    nextQuestion();
+  }
+
+
 
   const questions = useMemo(() => [
     {
-      question: 'Apakah Anda merasa tidur Anda berkualitas?',
-      answers: [
-        { answer: 'Ya', value: 1 , choose : false},
-        { answer: 'Tidak', value: 0 , choose : false},
+      question: '1.	Selama sebulan yang lalu, jam berapa Anda bisanya mulai tidur dimalam hari? Jam',
+      answers : [
       ],
+      type: 'text',
     },
     {
-      question: 'Berapa lama anda tidur?',
+      question: '2.	Selama sebulan yang lalu, berapa menit Anda habiskan waktu ditempat tidur, sebelum akhirnya Anda tertidur?',
       answers: [
-        { answer: 'Kurang dari 3 jam', value: 1, choose : false },
-        { answer: '3-5 jam', value: 2 , choose : false},
-        { answer: '5-8 jam', value: 3 , choose : false},
-        { answer: 'Lebih dari 8 jam', value: 4 , choose : false},
-      ],
+        { answer: '15 Menit/Kurang', value: 1 , choose : false},  
+        { answer: '16-30 Menit', value: 2 , choose : false},
+        { answer: '31-60 Menit', value: 3 , choose : false},
+        { answer: 'Lebih dari 60 Menit', value: 4 , choose : false},
+      ],        
+      type: 'radio',
     },
     {
-      question: 'Apakah Anda merasa segar saat bangun tidur?',
+      question: '3.	Selama sebulan yang lalu, jam berapa Anda biasanya bangun disetiap pagi? Jam',
       answers: [
-        { answer: 'Ya', value: 1, choose : false },
-        { answer: 'Tidak', value: 0, choose : false },
       ],
+      type: 'text',
     },
     {
-      question: 'Apakah Anda merasa lelah saat bangun tidur?',
+      question: '4.	Selama sebulan yang lalu, berapa jam Anda tidur pulas di malam hari?',
       answers: [
-        { answer: 'Ya', value: 0 , choose : false},
-        { answer: 'Tidak', value: 1, choose : false },
-      ],
+        { answer: 'Lebih dari 7 jam', value: 1 , choose : false},
+        { answer: '6-7 jam', value: 2 , choose : false},
+        { answer: '5-6 jam', value: 3 , choose : false},
+        { answer: 'Kurang dari 5 jam', value: 4 , choose : false},
+      ], 
+      type: 'radio',     
     },
     {
-      question: 'Apakah Anda merasa kantuk saat siang hari?',
+      question: '5.	Tidak dapat tidur selama 30 menit',
       answers: [
-        { answer: 'Ya', value : 0, choose : false },
-        { answer: 'Tidak', value : 1, choose : false },
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
       ],
+      type: 'radio',
     },
+    {
+      question: '6.	Bangun tidur di tengah malam atau bangun pagi terlalu cepat',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '7.	Pergi ke kamar mandi di malam hari',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '8.	Sulit bernafas secara nyaman',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '9.	Batuk atau berdengkur dengan keras',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '10.	Merasa kedinginan ', 
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '11.	Merasa kepanasan',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '12.	Mengalami mimpi buruk',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '13.	Nyeri di badan',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '14.	Gangguan tidur lainnya (misalnya mengompol, berjalan sambal tidur, mudah tertidur dimana saja, dan lain-lain)',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '15.	Selama sebulan yang lalu, seberapa sering anda mengonsumsi obat-obatan untuk membantu anda tidur',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '16.	Selama sebulan yang lalu, seberapa sering muncul masalah-masalah yang dapat mengganggu anda saat mengendarai kendaraan, makan, atau beraktivitas sosial',
+      answers: [
+        { answer : 'Tidak Pernah', value : 1, choose : false},
+        { answer : '1 Kali Seminggu', value : 2, choose : false},
+        { answer : '2 Kali Seminggu', value : 3, choose : false},
+        { answer : '3 Kali Seminggu/lebih', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '17.	Selama sebulan yang lalu, bagaimana rata-rata kualitas tidur anda',
+      answers: [
+        { answer : 'Sangat Baik', value : 1, choose : false},
+        { answer : 'Baik', value : 2, choose : false},
+        { answer : 'Buruk', value : 3, choose : false},
+        { answer : 'Sangat Buruk', value : 4, choose : false},
+      ],
+      type: 'radio',
+    },
+    {
+      question: '18.	Selama sebulan yang lalu, berapa banyak masalah yang membuat anda antusias untuk menyelesaikannya',
+      answers: [
+        { answer : 'Antusias besar', value : 1, choose : false},
+        { answer : 'Antusias sedang', value : 2, choose : false},
+        { answer : 'Antusias kecil', value : 3, choose : false},
+        { answer : 'Tidak antusias', value : 4, choose : false},
+      ],
+      type: 'radio',
+    }
   ]
   , []);
 
 
   const handleQuizChange = () => {
     setQuestionNumber(1);
-    setScoreArray([0,0,0,0,0]);
+    setScoreArray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
     setSleepQuality('');
     setQuiz(!quiz);
   }
@@ -202,20 +375,46 @@ export default function TabTwoScreen() {
         <Text style={styles.textdesc}>
           {questions[questionNumber - 1].question}
         </Text>
-        {questions[questionNumber - 1].answers.map((answer, index) => (
-          <TouchableHighlight underlayColor="#a0a0a0" style={styles.radioButton} key={index} onPress={() => handleScore(answer.value)}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {questions[questionNumber - 1].answers[index].choose ?
-              <Ionicons name="radio-button-on" size={24} color="black" />
-              :
-              <Ionicons name="radio-button-off" size={24} color="black" />
-              }
-              <Text style={styles.radioText}>
-                {answer.answer}
-              </Text>
-            </View>
+        
+        {questions[questionNumber - 1].type === 'radio' ? (
+          questions[questionNumber - 1].answers.map((answer, index) => (
+            <TouchableHighlight
+              underlayColor="#a0a0a0"
+              style={styles.radioButton}
+              key={index}
+              onPress={() => handleScore(answer.value)}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {questions[questionNumber - 1].answers[index].choose ? (
+                  <Ionicons name="radio-button-on" size={24} color="black" />
+                ) : (
+                  <Ionicons name="radio-button-off" size={24} color="black" />
+                )}
+                <Text style={styles.radioText}>{answer.answer}</Text>
+              </View>
+            </TouchableHighlight>
+          ))
+        ) : (
+          <View>
+          <View style={styles.textInputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Your answer"
+              onChangeText={(text) => handleTextInputChange(text)}
+              value={textInputValue}
+            />
+            <Text style={{color: 'black', fontSize: 12, marginTop: 5}}>
+              {questionNumber === 1 ? 'Contoh : 22:00' : 'Contoh : 7:00'}
+            </Text>
+          </View>
+          <TouchableHighlight underlayColor="#a0a0a0" style={styles.btnsleep} onPress={() => submitHour(textInputValue, questionNumber)}>
+            <Text style={{color: 'white', textAlign: 'center'}}>
+              Selanjutnya
+            </Text>
           </TouchableHighlight>
-        ))}
+          </View>
+        )}
+
         {questionNumber > 1 ? (
         <TouchableHighlight underlayColor="#a0a0a0" style={styles.btnsleep} onPress={prevQuestion}>
           <Text style={{color: 'white', textAlign: 'center'}}>
@@ -223,7 +422,7 @@ export default function TabTwoScreen() {
           </Text>
         </TouchableHighlight>
         ) : null}
-        {questionNumber < finalquestion  ? (
+        {(questionNumber < finalquestion && questionNumber !== 1 && questionNumber !== 3)  ? (
         <TouchableHighlight underlayColor="#a0a0a0" style={styles.btnsleep} onPress={nextQuestion}>
           <Text style={{color: 'white', textAlign: 'center'}}>
             Selanjutnya
